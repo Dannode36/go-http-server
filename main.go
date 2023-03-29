@@ -24,7 +24,7 @@ func main() {
 }
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	logRequest(r)
-	if _, err := io.WriteString(w, fmt.Sprintf("Unix time is %d UTC\n",
+	if _, err := io.WriteString(w, fmt.Sprintf("Unix time is %d UTC\n\nMade by @Dannode36",
 		time.Now().UTC().Unix())); err != nil {
 		return
 	}
