@@ -12,7 +12,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", getRoot)
-	http.HandleFunc("/utc", getUTC)
+	http.HandleFunc("/unix", getUnixTime)
 
 	err := http.ListenAndServe(":3333", nil)
 	if errors.Is(err, http.ErrServerClosed) {
@@ -23,25 +23,26 @@ func main() {
 	}
 }
 func getRoot(w http.ResponseWriter, r *http.Request) {
-	logRequest(r)
-	if _, err := io.WriteString(w, fmt.Sprintf("Unix time is %d UTC\n\nMade by @Dannode36",
-		time.Now().UTC().Unix())); err != nil {
+	log(r)
+	if _, err := io.WriteString(w,
+		fmt.Sprintf("Unix time is %d UTC\n\nMade by @Dannode36",
+			time.Now().UTC().Unix())); err != nil {
 		return
 	}
 }
-func getUTC(w http.ResponseWriter, r *http.Request) {
-	logRequest(r)
-	if _, err := io.WriteString(w, fmt.Sprintf("%d",
-		time.Now().UTC().Unix())); err != nil {
+func getUnixTime(w http.ResponseWriter, r *http.Request) {
+	log(r)
+	if _, err := io.WriteString(w,
+		fmt.Sprintf("%d",
+			time.Now().UTC().Unix())); err != nil {
 		return
 	}
 }
-func logRequest(r *http.Request) {
+func log(r *http.Request) {
 	if !strings.Contains(r.URL.String(), "/favicon.ico") {
-		fmt.Printf("[%s] %s -> %s %s \n",
-			formattedTime(), r.RemoteAddr, r.Method, r.URL)
+		fmt.Printf("[%s] %s -> %s %s \n", formattedTime(), r.RemoteAddr, r.Method, r.URL)
 	}
 }
 func formattedTime() string {
-	return time.Now().Format("2006-02-01 15:04:05")
+	return time.Now().Format("02-01-2006 15:04:05")
 }
